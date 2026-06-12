@@ -279,6 +279,7 @@ function Inscricao() {
         })
       });
       if (!res.ok) throw new Error('Falha no envio');
+      window.fbq?.('track', 'Lead'); // Meta Pixel
       setSent(true);
     } catch (err) {
       setSubmitError(true);
@@ -339,13 +340,15 @@ function Inscricao() {
                   iconLeft={<img className="lp-whatsapp-btn__icon"
                     src={asset('whatsappIcon', 'assets/whatsapp.svg')} alt="" aria-hidden="true" />}
                   iconRight={<Icon name="ArrowRight" size={18} />}
-                  onClick={() => window.open(waLink(), '_blank', 'noopener')}>
+                  onClick={() => { window.fbq?.('track', 'Contact'); // Meta Pixel
+                    window.open(waLink(), '_blank', 'noopener'); }}>
                   Falar com a equipe no WhatsApp
                 </Button>
                 <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: 'var(--fs-sm)' }}>
                   Não foi redirecionado?{' '}
                   <a className="pocus-link" href={waLink()}
-                    target="_blank" rel="noopener">Abra a conversa por aqui</a>.
+                    onClick={() => { window.fbq?.('track', 'Contact'); /* Meta Pixel */ }}
+                    target="_blank" rel="noopener noreferrer">Abra a conversa por aqui</a>.
                 </p>
                 <Button variant="ghost" onClick={() => { setSent(false);
                   setForm({ nome: '', email: '', whats: '' }); setAccept(false); }}>
