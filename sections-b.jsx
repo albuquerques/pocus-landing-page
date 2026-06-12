@@ -237,26 +237,31 @@ function Inscricao() {
   const { Button, Field, Input, Checkbox, Alert } = DSb;
   // Endpoint do Formspree — as inscrições caem na sua dashboard e no seu e-mail.
   const FORMSPREE_ENDPOINT = 'https://formspree.io/f/meewrovy';
-  // Número de WhatsApp da equipe (formato internacional, só dígitos): +55 86 99807-9236
-  const WHATSAPP_NUMBER = '5586998079236';
-  const waLink = () => {
-    const primeiro = form.nome.trim().split(' ')[0] || '';
-    const msg = `Olá! Acabei de me inscrever no curso POCUS da Medsafe` +
-      (primeiro ? `. Meu nome é ${primeiro}` : '') +
-      ` e gostaria de receber as orientações para garantir minha vaga.`;
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-  };
+  const WHATSAPP_LINK =
+    'https://wa.me/5586998079236?text=Quero%20garantir%20minha%20vaga%20no%20POCUS';
   const [form, setForm] = React.useState({ nome: '', email: '', whats: '' });
   const [accept, setAccept] = React.useState(false);
   const [errors, setErrors] = React.useState({});
   const [sent, setSent] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
   const [submitError, setSubmitError] = React.useState(false);
+  const submissionInFlight = React.useRef(false);
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
+  const trackLead = () => {
+    console.log('LEAD DISPARADO'); // Meta Pixel
+    window.fbq?.('track', 'Lead'); // Meta Pixel
+  };
+
+  const trackContact = () => {
+    console.log('CONTACT DISPARADO'); // Meta Pixel
+    window.fbq?.('track', 'Contact'); // Meta Pixel
+  };
+
   const submit = async (e) => {
     e.preventDefault();
+    if (submissionInFlight.current) return;
     const er = {};
     if (!form.nome.trim()) er.nome = 'Informe seu nome completo.';
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) er.email = 'Informe um e-mail válido.';
@@ -267,6 +272,7 @@ function Inscricao() {
 
     setSubmitError(false);
     setSubmitting(true);
+    submissionInFlight.current = true;
     try {
       const res = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
@@ -279,11 +285,12 @@ function Inscricao() {
         })
       });
       if (!res.ok) throw new Error('Falha no envio');
-      window.fbq?.('track', 'Lead'); // Meta Pixel
+      trackLead();
       setSent(true);
     } catch (err) {
       setSubmitError(true);
     } finally {
+      submissionInFlight.current = false;
       setSubmitting(false);
     }
   };
@@ -336,18 +343,17 @@ function Inscricao() {
                   equipe pelo WhatsApp — é por lá que confirmamos sua vaga e enviamos as
                   informações de pagamento, o endereço e todas as orientações do curso.
                 </p>
-                <Button variant="accent" size="lg" className="lp-whatsapp-btn"
-                  iconLeft={<img className="lp-whatsapp-btn__icon"
-                    src={asset('whatsappIcon', 'assets/whatsapp.svg')} alt="" aria-hidden="true" />}
-                  iconRight={<Icon name="ArrowRight" size={18} />}
-                  onClick={() => { window.fbq?.('track', 'Contact'); // Meta Pixel
-                    window.open(waLink(), '_blank', 'noopener'); }}>
+                <a className="lp-whatsapp-btn" href={WHATSAPP_LINK}
+                  target="_blank" rel="noopener noreferrer" onClick={trackContact}>
+                  <img className="lp-whatsapp-btn__icon"
+                    src={asset('whatsappIcon', 'assets/whatsapp.svg')} alt="" aria-hidden="true" />
                   Falar com a equipe no WhatsApp
-                </Button>
+                  <Icon name="ArrowRight" size={18} />
+                </a>
                 <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: 'var(--fs-sm)' }}>
                   Não foi redirecionado?{' '}
-                  <a className="pocus-link" href={waLink()}
-                    onClick={() => { window.fbq?.('track', 'Contact'); /* Meta Pixel */ }}
+                  <a className="pocus-link" href={WHATSAPP_LINK}
+                    onClick={trackContact}
                     target="_blank" rel="noopener noreferrer">Abra a conversa por aqui</a>.
                 </p>
                 <Button variant="ghost" onClick={() => { setSent(false);
