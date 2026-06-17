@@ -179,6 +179,7 @@ function Professores() {
 
 function Investimento() {
   const { Button } = DSb;
+  const ENROLL_LINK = 'https://ensino.medsafebrasil.com.br/matricula/matricula-hibrida/ZEOGHYJX';
   const incl = [
     '10 horas de formação presencial',
     'Aulas teóricas e práticas',
@@ -210,7 +211,10 @@ function Investimento() {
               </div>
               <Button variant="accent" size="lg" fullWidth
                 iconRight={<Icon name="ArrowRight" size={20} />}
-                onClick={() => scrollToId('inscricao')}>
+                onClick={() => {
+                  window.fbq?.('track', 'InitiateCheckout');
+                  window.open(ENROLL_LINK, '_blank', 'noopener,noreferrer');
+                }}>
                 Fazer minha inscrição
               </Button>
               <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--blue-200)', margin: '16px 0 0',
@@ -233,184 +237,6 @@ function Investimento() {
   );
 }
 
-function Inscricao() {
-  const { Button, Field, Input, Checkbox, Alert } = DSb;
-  // Endpoint do Formspree — as inscrições caem na sua dashboard e no seu e-mail.
-  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/meewrovy';
-  const WHATSAPP_LINK =
-    'https://wa.me/5586998079236?text=Quero%20garantir%20minha%20vaga%20no%20POCUS';
-  const [form, setForm] = React.useState({ nome: '', email: '', whats: '' });
-  const [accept, setAccept] = React.useState(false);
-  const [errors, setErrors] = React.useState({});
-  const [sent, setSent] = React.useState(false);
-  const [submitting, setSubmitting] = React.useState(false);
-  const [submitError, setSubmitError] = React.useState(false);
-  const submissionInFlight = React.useRef(false);
-
-  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
-
-  const trackLead = () => {
-    console.log('LEAD DISPARADO'); // Meta Pixel
-    window.fbq?.('track', 'Lead'); // Meta Pixel
-  };
-
-  const trackContact = () => {
-    console.log('CONTACT DISPARADO'); // Meta Pixel
-    window.fbq?.('track', 'Contact'); // Meta Pixel
-  };
-
-  const submit = async (e) => {
-    e.preventDefault();
-    if (submissionInFlight.current) return;
-    const er = {};
-    if (!form.nome.trim()) er.nome = 'Informe seu nome completo.';
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) er.email = 'Informe um e-mail válido.';
-    if (form.whats.replace(/\D/g, '').length < 10) er.whats = 'Informe um telefone com DDD.';
-    if (!accept) er.accept = true;
-    setErrors(er);
-    if (Object.keys(er).length) return;
-
-    setSubmitError(false);
-    setSubmitting(true);
-    submissionInFlight.current = true;
-    try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          nome: form.nome,
-          email: form.email,
-          telefone: form.whats,
-          _subject: `Nova inscrição POCUS — ${form.nome}`
-        })
-      });
-      if (!res.ok) throw new Error('Falha no envio');
-      trackLead();
-      setSent(true);
-    } catch (err) {
-      setSubmitError(true);
-    } finally {
-      submissionInFlight.current = false;
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <section className="lp-section lp-navy" id="inscricao">
-      <div className="lp-container">
-        <div className="lp-form-wrap">
-          <Reveal>
-            <div>
-              <span className="lp-eyebrow">Inscrição</span>
-              <h2 className="lp-h2">Garanta sua vaga na próxima turma.</h2>
-              <p className="lp-lede" style={{ marginBottom: 8 }}>
-                Preencha seus dados para receber as informações de inscrição e assegurar seu
-                lugar no curso POCUS da Medsafe.
-              </p>
-              <ul className="lp-form__list">
-                <li>
-                  <span className="lp-itile"><Icon name="CalendarDays" size={18} /></span>
-                  <div><b>04 de julho · Teresina/PI</b>
-                    <span>Auditório Parnaíba — Manhattan River Center (Torre 2)</span></div>
-                </li>
-                <li>
-                  <span className="lp-itile"><Icon name="Users" size={18} /></span>
-                  <div><b>Apenas 16 vagas</b>
-                    <span>Turma reduzida para garantir prática individual com os ultrassons.</span></div>
-                </li>
-                <li>
-                  <span className="lp-itile"><Icon name="CalendarClock" size={18} /></span>
-                  <div><b>Inscrições até 02 de julho</b>
-                    <span>Após a confirmação, a equipe acompanha você com todas as orientações.</span></div>
-                </li>
-              </ul>
-            </div>
-          </Reveal>
-
-          <Reveal delay={90}>
-            {sent ? (
-              <div className="lp-form" style={{ alignItems: 'flex-start', gap: 16 }}>
-                <span className="lp-itile" style={{ background: 'var(--success-soft)',
-                  color: 'var(--success)', width: 56, height: 56 }}>
-                  <Icon name="CheckCheck" size={28} />
-                </span>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 600,
-                  fontSize: 'var(--fs-h3)', color: 'var(--text-strong)', margin: 0 }}>
-                  Inscrição recebida!
-                </h3>
-                <p style={{ margin: 0, color: 'var(--text-body)', lineHeight: 1.6 }}>
-                  Obrigado, {form.nome.split(' ')[0]}. O último passo é falar com a nossa
-                  equipe pelo WhatsApp — é por lá que confirmamos sua vaga e enviamos as
-                  informações de pagamento, o endereço e todas as orientações do curso.
-                </p>
-                <a className="lp-whatsapp-btn" href={WHATSAPP_LINK}
-                  target="_blank" rel="noopener noreferrer" onClick={trackContact}>
-                  <img className="lp-whatsapp-btn__icon"
-                    src={asset('whatsappIcon', 'assets/whatsapp.svg')} alt="" aria-hidden="true" />
-                  Falar com a equipe no WhatsApp
-                  <Icon name="ArrowRight" size={18} />
-                </a>
-                <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: 'var(--fs-sm)' }}>
-                  Não foi redirecionado?{' '}
-                  <a className="pocus-link" href={WHATSAPP_LINK}
-                    onClick={trackContact}
-                    target="_blank" rel="noopener noreferrer">Abra a conversa por aqui</a>.
-                </p>
-                <Button variant="ghost" onClick={() => { setSent(false);
-                  setForm({ nome: '', email: '', whats: '' }); setAccept(false); }}>
-                  Fazer nova inscrição
-                </Button>
-              </div>
-            ) : (
-              <form className="lp-form" onSubmit={submit} noValidate>
-                <Field label="Nome completo" htmlFor="f-nome"
-                  error={errors.nome}>
-                  <Input id="f-nome" placeholder="Seu nome completo" value={form.nome}
-                    onChange={set('nome')} invalid={!!errors.nome}
-                    iconLeft={<Icon name="User" size={18} />} />
-                </Field>
-                <Field label="E-mail" htmlFor="f-email"
-                  hint={!errors.email ? 'Usaremos para enviar os detalhes da inscrição.' : undefined}
-                  error={errors.email}>
-                  <Input id="f-email" type="email" placeholder="voce@hospital.br"
-                    value={form.email} onChange={set('email')} invalid={!!errors.email}
-                    iconLeft={<Icon name="Mail" size={18} />} />
-                </Field>
-                <Field label="Telefone / WhatsApp" htmlFor="f-whats" error={errors.whats}>
-                  <Input id="f-whats" type="tel" placeholder="(86) 90000-0000"
-                    value={form.whats} onChange={set('whats')} invalid={!!errors.whats}
-                    iconLeft={<Icon name="Phone" size={18} />} />
-                </Field>
-                <Checkbox checked={accept} onChange={setAccept}
-                  label="Aceito receber informações sobre o curso pelo WhatsApp e e-mail." />
-                {errors.accept && (
-                  <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--danger)' }}>
-                    É necessário aceitar para continuar.
-                  </span>
-                )}
-                {submitError && (
-                  <Alert variant="danger" title="Não foi possível enviar agora">
-                    Verifique sua conexão e tente novamente. Se persistir, fale com a equipe
-                    pelo WhatsApp.
-                  </Alert>
-                )}
-                <Button type="submit" variant="primary" size="lg" fullWidth
-                  disabled={submitting}
-                  iconRight={submitting ? undefined : <Icon name="ArrowRight" size={20} />}>
-                  {submitting ? 'Enviando…' : 'Quero garantir minha vaga'}
-                </Button>
-                <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--text-muted)', margin: 0,
-                  textAlign: 'center' }}>
-                  Turma limitada a 16 participantes.
-                </p>
-              </form>
-            )}
-          </Reveal>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function FAQ() {
   const items = [
@@ -485,7 +311,7 @@ function CTAFinal() {
           <div style={{ marginTop: 32 }}>
             <Button variant="accent" size="lg"
               iconRight={<Icon name="ArrowRight" size={20} />}
-              onClick={() => scrollToId('inscricao')}>
+              onClick={() => scrollToId('investimento')}>
               Quero me inscrever
             </Button>
           </div>
@@ -527,7 +353,7 @@ function Footer() {
               <h5>Inscrições</h5>
               <p>Até 02 de julho</p>
               <p>Máx. 16 participantes</p>
-              <a href="#inscricao">Garantir minha vaga →</a>
+              <a href="#investimento">Garantir minha vaga →</a>
             </div>
           </div>
         </div>
@@ -540,4 +366,4 @@ function Footer() {
   );
 }
 
-Object.assign(window, { Metodo, Professores, Investimento, Inscricao, FAQ, CTAFinal, Footer });
+Object.assign(window, { Metodo, Professores, Investimento, FAQ, CTAFinal, Footer });

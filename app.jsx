@@ -11,7 +11,6 @@ function App() {
         <Metodo />
         <Professores />
         <Investimento />
-        <Inscricao />
         <FAQ />
         <CTAFinal />
       </main>

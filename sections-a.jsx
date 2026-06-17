@@ -23,7 +23,7 @@ function Header() {
           <a href="#investimento">Investimento</a>
           <a href="#faq">FAQ</a>
         </nav>
-        <Button variant="primary" size="sm" onClick={() => scrollToId('inscricao')}>
+        <Button variant="primary" size="sm" onClick={() => scrollToId('investimento')}>
           Garantir minha vaga
         </Button>
       </div>
@@ -89,7 +89,7 @@ function Hero() {
               <div className="lp-hero__cta">
                 <Button variant="accent" size="lg"
                   iconRight={<Icon name="ArrowRight" size={20} />}
-                  onClick={() => scrollToId('inscricao')}>
+                  onClick={() => scrollToId('investimento')}>
                   Garantir minha vaga
                 </Button>
                 <span className="lp-hero__note">
