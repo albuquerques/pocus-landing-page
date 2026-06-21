@@ -1209,13 +1209,13 @@ image-slot[data-variant="prof"]:hover {
 .lp-price__main {
   background: var(--pocus-blue);
   color: #fff;
-  padding: 44px;
+  padding: 36px;
   position: relative;
   overflow: hidden;
 }
 .lp-price__incl {
   background: var(--surface-card);
-  padding: 44px;
+  padding: 36px;
 }
 .lp-price__incl h4 {
   font-family: var(--font-display); font-weight: var(--fw-semibold);
@@ -1224,19 +1224,19 @@ image-slot[data-variant="prof"]:hover {
 .lp-price__incl ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 13px; }
 .lp-price__incl li { display: flex; gap: 12px; font-size: var(--fs-sm); color: var(--text-body); line-height: 1.45; }
 .lp-price__incl li svg { color: var(--success); flex-shrink: 0; margin-top: 2px; }
-.lp-price__from { font-size: var(--fs-sm); color: var(--blue-200); margin: 0 0 6px; }
+.lp-price__from { font-size: var(--fs-sm); color: var(--blue-200); margin: 0 0 4px; }
 .lp-price__big {
   font-family: var(--font-display); font-weight: var(--fw-bold);
-  font-size: clamp(2.4rem, 1.8rem + 2vw, 3.2rem); letter-spacing: -0.02em;
-  color: #fff; line-height: 1; margin: 0 0 6px;
+  font-size: clamp(3.2rem, 2.4rem + 3vw, 4.8rem); letter-spacing: -0.03em;
+  color: #fff; line-height: 1; margin: 0 0 4px;
 }
-.lp-price__big small { font-size: 1.1rem; font-weight: var(--fw-medium); color: var(--mist-blue); }
-.lp-price__inst { font-size: var(--fs-body); color: var(--mist-blue); margin: 0 0 24px; }
+.lp-price__big small { font-size: 1.4rem; font-weight: var(--fw-medium); color: var(--mist-blue); }
+.lp-price__inst { font-size: var(--fs-body); color: var(--mist-blue); margin: 0 0 18px; }
 .lp-price__cash {
   display: inline-flex; align-items: center; gap: 10px;
-  padding: 12px 16px; border-radius: var(--radius-md);
+  padding: 10px 14px; border-radius: var(--radius-md);
   background: rgba(255,255,255,0.08); border: 1px solid var(--border-inverse);
-  margin-bottom: 30px;
+  margin-bottom: 22px;
 }
 .lp-price__cash b { font-family: var(--font-display); font-weight: var(--fw-bold); color: #fff; }
 .lp-price__cash span { font-size: var(--fs-sm); color: var(--clinical-blue); }

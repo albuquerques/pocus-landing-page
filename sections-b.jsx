@@ -201,9 +201,9 @@ function Investimento() {
           <div className="lp-price">
             <div className="lp-price__main">
               <img className="lp-price__grafismo" src={asset('grafismoRings', 'assets/grafismo-rings.svg')} alt="" aria-hidden="true" />
-              <p className="lp-price__from">A partir de</p>
-              <p className="lp-price__big">R$ 1.697<small>,00</small></p>
-              <p className="lp-price__inst">em até 12x no cartão de crédito</p>
+              <p className="lp-price__from">12x de</p>
+              <p className="lp-price__big">R$ 141<small>,42</small></p>
+              <p className="lp-price__inst">no cartão de crédito</p>
               <div className="lp-price__cash">
                 <Icon name="Tag" size={18} style={{ color: 'var(--clinical-blue)' }} />
                 <span>À vista:</span> <b>R$ 1.528,29</b>
