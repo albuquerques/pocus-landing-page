@@ -15,7 +15,7 @@ function Metodo() {
     { icon: 'Activity', t: 'Simulações clínicas' },
     { icon: 'MessagesSquare', t: 'Discussão de casos' },
     { icon: 'Stethoscope', t: 'Prática supervisionada' },
-    { icon: 'BookOpen', t: 'Material de apoio & e-book' }
+    { icon: 'BookOpen', t: 'Materiais de apoio do curso' }
   ];
   const cron = [
     { h: '07:00 – 10:00', d: 'Teoria + prática', b: false },
@@ -184,7 +184,7 @@ function Investimento() {
     '10 horas de formação presencial',
     'Aulas teóricas e práticas',
     'Prática supervisionada com ultrassons',
-    'E-book e materiais didáticos',
+    'Materiais didáticos do curso',
     'Certificado de conclusão',
     'Suporte para dúvidas e contato da equipe'
   ];
