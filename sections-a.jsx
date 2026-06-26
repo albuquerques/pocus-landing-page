@@ -129,7 +129,7 @@ function VideoPlaceholder() {
         ref={videoRef}
         className="lp-video__el"
         src={asset('videoChamada', 'assets/chamada-francisco.mp4')}
-        poster={asset('fotoFrancisco', 'assets/foto-francisco.png')}
+        poster="assets/poster-francisco.jpg"
         playsInline
         preload="metadata"
         controls={playing}
