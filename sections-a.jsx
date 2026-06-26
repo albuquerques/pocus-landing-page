@@ -54,15 +54,21 @@ function Hero() {
           opacity: 0.16, filter: 'brightness(1.7)', pointerEvents: 'none', zIndex: 0 }} />
       <div className="lp-container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="lp-hero__grid">
-          <div>
-            <Reveal>
-              <span className="lp-eyebrow" style={{ color: 'var(--clinical-blue)' }}>
-                Curso presencial · Medsafe
-              </span>
-            </Reveal>
+
+          <Reveal className="lp-hero__cell-eyebrow">
+            <span className="lp-eyebrow" style={{ color: 'var(--clinical-blue)' }}>
+              Curso presencial · Medsafe
+            </span>
+          </Reveal>
+
+          <Reveal delay={120} className="lp-hero__cell-video">
+            <VideoPlaceholder />
+          </Reveal>
+
+          <div className="lp-hero__cell-body">
             <Reveal delay={60}>
               <h1 className="lp-hero__title">
-                Ultrassom à beira-leito para decisões clínicas mais <em>rápidas e seguras</em>.
+                O médico que usa <em>POCUS</em> decide mais rápido, erra menos e <em>sai do plantão mais seguro</em>.
               </h1>
             </Reveal>
             <Reveal delay={120}>
@@ -99,9 +105,6 @@ function Hero() {
             </Reveal>
           </div>
 
-          <Reveal delay={120}>
-            <VideoPlaceholder />
-          </Reveal>
         </div>
       </div>
     </section>
@@ -347,4 +350,85 @@ function MetodoLeitura() {
   );
 }
 
-Object.assign(window, { Header, Hero, Problema, Solucao, MetodoLeitura, scrollToId });
+function UrgencyBar() {
+  const DEADLINE        = new Date('2026-07-02T23:59:59-03:00');
+  const TOTAL_SPOTS     = 16;
+  const REMAINING_SPOTS = 12;
+
+  function calcTimeLeft() {
+    const diff = DEADLINE - Date.now();
+    if (diff <= 0) return null;
+    return {
+      d: Math.floor(diff / 86400000),
+      h: Math.floor((diff % 86400000) / 3600000),
+      m: Math.floor((diff % 3600000) / 60000),
+      s: Math.floor((diff % 60000) / 1000),
+    };
+  }
+
+  const [timeLeft, setTimeLeft] = React.useState(calcTimeLeft);
+
+  React.useEffect(() => {
+    const t = setInterval(() => setTimeLeft(calcTimeLeft()), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  if (!timeLeft) return null;
+
+  const pct = Math.round(((TOTAL_SPOTS - REMAINING_SPOTS) / TOTAL_SPOTS) * 100);
+  const units = [
+    { v: timeLeft.d, k: 'dias' },
+    { v: timeLeft.h, k: 'horas' },
+    { v: timeLeft.m, k: 'min' },
+    { v: timeLeft.s, k: 'seg' },
+  ];
+
+  return (
+    <div className="lp-urgency">
+      <div className="lp-container">
+        <div className="lp-urgency__inner">
+
+          <div className="lp-urgency__cd">
+            <span className="lp-urgency__label">
+              <Icon name="Clock" size={13} /> Inscrições encerram em
+            </span>
+            <div className="lp-urgency__units">
+              {units.map((u, i) => (
+                <React.Fragment key={u.k}>
+                  {i > 0 && <span className="lp-urgency__sep">:</span>}
+                  <div className="lp-urgency__unit">
+                    <span className="lp-urgency__val">{String(u.v).padStart(2, '0')}</span>
+                    <span className="lp-urgency__k">{u.k}</span>
+                  </div>
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+
+          <div className="lp-urgency__div" />
+
+          <div className="lp-urgency__spots">
+            <div className="lp-urgency__spots-top">
+              <span className="lp-urgency__label">
+                <Icon name="Users" size={13} /> Vagas disponíveis
+              </span>
+              <span className="lp-urgency__spots-count">
+                <em>{REMAINING_SPOTS}</em> de {TOTAL_SPOTS}
+              </span>
+            </div>
+            <div className="lp-urgency__bar">
+              <div className="lp-urgency__bar-fill" style={{ width: pct + '%' }} />
+            </div>
+          </div>
+
+          <button className="lp-urgency__cta" onClick={() => scrollToId('investimento')}>
+            Garantir vaga <Icon name="ArrowRight" size={15} />
+          </button>
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { Header, Hero, Problema, Solucao, MetodoLeitura, UrgencyBar, scrollToId });

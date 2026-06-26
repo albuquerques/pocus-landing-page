@@ -139,12 +139,37 @@ body { margin: 0; }
 .lp-hero__grid {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 56px;
-  align-items: center;
+  grid-template-areas:
+    "eyebrow video"
+    "body    video";
+  column-gap: 56px;
+  row-gap: 0;
   padding-block: 88px 96px;
 }
+.lp-hero__cell-eyebrow {
+  grid-area: eyebrow;
+  align-self: end;
+}
+.lp-hero__cell-video {
+  grid-area: video;
+  align-self: center;
+}
+.lp-hero__cell-body {
+  grid-area: body;
+  align-self: start;
+}
 @media (max-width: 940px) {
-  .lp-hero__grid { grid-template-columns: 1fr; gap: 44px; padding-block: 64px 72px; }
+  .lp-hero__grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "eyebrow"
+      "video"
+      "body";
+    gap: 24px;
+    padding-block: 48px 64px;
+  }
+  .lp-hero__cell-eyebrow .lp-eyebrow { margin-bottom: 0; }
+  .lp-hero__title { margin-top: 0; }
 }
 .lp-hero .lp-hero__title {
   font-family: var(--font-display);
@@ -1350,6 +1375,127 @@ image-slot[data-variant="prof"]:hover {
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1 !important; transform: none !important; transition: none; }
   html { scroll-behavior: auto; }
+}
+
+/* ---- Urgency Bar ---- */
+.lp-urgency {
+  background: var(--pocus-blue);
+  border-top: 1px solid var(--border-inverse);
+  border-bottom: 1px solid var(--border-inverse);
+  padding-block: 20px;
+}
+.lp-urgency__inner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+.lp-urgency__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blue-200);
+  margin-bottom: 8px;
+}
+.lp-urgency__cd { display: flex; flex-direction: column; }
+.lp-urgency__units { display: flex; align-items: center; gap: 6px; }
+.lp-urgency__unit { display: flex; flex-direction: column; align-items: center; }
+.lp-urgency__val {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.55rem;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  min-width: 2ch;
+  text-align: center;
+}
+.lp-urgency__k {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--blue-200);
+  letter-spacing: 0.06em;
+  margin-top: 3px;
+}
+.lp-urgency__sep {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--clinical-blue);
+  line-height: 1;
+  align-self: flex-start;
+  margin-top: 3px;
+  opacity: 0.7;
+}
+.lp-urgency__div {
+  width: 1px;
+  height: 54px;
+  background: var(--border-inverse);
+  flex-shrink: 0;
+}
+.lp-urgency__spots {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 180px;
+}
+.lp-urgency__spots-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.lp-urgency__spots-count {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  color: var(--mist-blue);
+  white-space: nowrap;
+}
+.lp-urgency__spots-count em {
+  font-style: normal;
+  font-weight: var(--fw-bold);
+  color: var(--clinical-blue);
+  font-size: var(--fs-lg);
+}
+.lp-urgency__bar {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,0.1);
+  overflow: hidden;
+}
+.lp-urgency__bar-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--clinical-blue), #5b8ff9);
+}
+.lp-urgency__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: opacity var(--dur-base) var(--ease-standard);
+}
+.lp-urgency__cta:hover { opacity: 0.88; }
+@media (max-width: 700px) {
+  .lp-urgency__div { display: none; }
+  .lp-urgency__cta { display: none; }
+  .lp-urgency__inner { gap: 16px; }
+  .lp-urgency__spots { min-width: 140px; }
 }
 
 /* small helper */

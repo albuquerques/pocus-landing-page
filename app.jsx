@@ -5,6 +5,7 @@ function App() {
       <Header />
       <main>
         <Hero />
+        <UrgencyBar />
         <Problema />
         <Solucao />
         <MetodoLeitura />
