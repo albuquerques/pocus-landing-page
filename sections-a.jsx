@@ -354,7 +354,7 @@ function MetodoLeitura() {
 function UrgencyBar() {
   const DEADLINE        = new Date('2026-07-02T23:59:59-03:00');
   const TOTAL_SPOTS     = 16;
-  const REMAINING_SPOTS = 12;
+  const REMAINING_SPOTS = 4;
 
   function calcTimeLeft() {
     const diff = DEADLINE - Date.now();
