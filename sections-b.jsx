@@ -249,7 +249,7 @@ function FAQ() {
     { q: 'Recebo certificado?',
       a: 'Sim. Ao concluir o curso você recebe certificado de conclusão, mediante participação nas atividades propostas.' },
     { q: 'Onde será realizado?',
-      a: 'No Auditório Parnaíba — Manhattan River Center (Torre 2), Av. Senador Área Leão, 2185, Teresina/PI.' },
+      a: 'No Sesc Cajuína — Av. Cajuína, 725, Noivos, Teresina/PI. Espaço Criação Artística Magno Pires, 2º andar.' },
     { q: 'Até quando posso me inscrever?',
       a: 'As inscrições vão até 02 de julho, ou até o preenchimento das 16 vagas — o que ocorrer primeiro.' },
     { q: 'Quais as formas de pagamento?',

@@ -43,7 +43,7 @@ function Hero() {
   const { Button, Badge } = DS;
   const facts = [
     { icon: 'CalendarDays', k: 'Data', v: '04 de julho' },
-    { icon: 'MapPin', k: 'Local', v: 'Teresina / PI' },
+    { icon: 'MapPin', k: 'Local', v: 'Sesc Cajuína — Teresina/PI' },
     { icon: 'Clock', k: 'Carga horária', v: '10 horas' },
     { icon: 'Users', k: 'Turma', v: 'Máx. 16 alunos' }
   ];
